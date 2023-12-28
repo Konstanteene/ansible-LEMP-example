@@ -1,0 +1,49 @@
+---
+# tasks file for mysql
+  - name: Installing Mysql  and dependencies
+    package:
+      name: "{{item}}"
+      state: present
+      update_cache: yes
+    loop:
+      - mysql-server
+      - mysql-client
+      - python3-mysqldb
+      - libmysqlclient-dev
+    become: yes
+  - name: Create new databases'
+    mysql_db:
+      name: bloodbank
+      state: present
+  - name: copy db to DBserver
+    copy:
+      src: bloodbank.sql
+      dest: /home/ubuntu/bloodbank.sql
+
+  - name: import db
+    mysql_db:
+      name: bloodbank
+      target: /home/ubuntu/bloodbank.sql
+      state: import
+    ignore_errors: yes
+
+  - name: Copy config
+    copy:
+      src: mysqlconfig.cnf
+      dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+
+  - name: Create BD user
+    mysql_user:
+      name: user
+      host: '%'
+      password: password
+      priv: '*.*:ALL,GRANT'
+      state: present
+
+  - name: Setup privelegues on DB
+    mysql_user:
+      name: user
+      host: '%'
+      priv: 'bloodbank.*:ALL'
+      state: present
+    notify: restart mysql

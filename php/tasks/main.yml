@@ -1,0 +1,10 @@
+---
+# tasks file for php
+  - name: Install PHP
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - php-fpm
+      - php-cli
+      - php-mysql

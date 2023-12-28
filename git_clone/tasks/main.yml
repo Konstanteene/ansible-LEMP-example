@@ -1,0 +1,12 @@
+---
+# tasks file for git_clone
+  - name: Clone repo
+    git:
+      repo: https://github.com/mentorchita/Blood-Bank-Management-System.git
+      dest: /var/www/bloodbank/
+      #force: no
+    ignore_errors: yes
+  - name: new connection.php
+    copy:
+      src: connection.php
+      dest: /var/www/bloodbank/file/connection.php

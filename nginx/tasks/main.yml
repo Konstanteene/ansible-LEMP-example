@@ -1,0 +1,24 @@
+---
+# tasks file for nginx
+  - name: Nginx Installation
+    apt:
+      name: nginx
+      state: present
+
+  - name: Status nginx
+    service:
+      name: nginx
+      state: started
+
+  - name: copy config
+    copy:
+      src: default.conf
+      dest: /etc/nginx/sites-available/default
+
+  - name: Symbolic Link to file
+    file:
+      src: /etc/nginx/sites-available/default
+      dest: /etc/nginx/sites-enabled/default
+      state: link
+      force: yes
+    notify: Restart Nginx

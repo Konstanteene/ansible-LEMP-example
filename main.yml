@@ -1,0 +1,14 @@
+- name: Setup Web
+  hosts: bloodbank
+  become: yes
+  roles:
+    - common_setup
+    - nginx
+    - php
+    - git_clone
+
+- name: Setup DB
+  hosts: db
+  become: yes
+  roles: 
+    - mysql

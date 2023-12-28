@@ -1,0 +1,17 @@
+---
+# tasks file for common_setup
+  - name: Ping
+    ping:
+
+  - name: Update and upgrade packages
+    become: true
+    apt:
+      upgrade: yes
+      update_cache: yes
+
+  - name: Install common packages
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+    loop:
+      - git
